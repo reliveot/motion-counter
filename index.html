@@ -120,17 +120,17 @@
 <section class="sec"><h3>有效觸控範圍</h3><div class="chips" data-key="area"><button data-value="100">100%</button><button data-value="75">75%</button><button data-value="50">50%</button></div><p>全螢幕為預設。方向與記憶模式會依比例縮小左右觸控區。</p></section>
 <section class="sec"><h3>觸碰防誤觸間隔</h3><div class="chips" data-key="cooldown"><button data-value="400">0.4 秒</button><button data-value="800">0.8 秒</button><button data-value="1200">1.2 秒</button><button data-value="2000">2 秒</button></div><p>同一批手指、指節或手掌接觸只算一下；必須全部離開螢幕，並超過間隔時間後才接受下一下。</p></section>
 <section class="sec"><h3>目標次數／題數</h3><div class="chips" data-key="goal"><button data-value="10">10</button><button data-value="20">20</button><button data-value="30">30</button><button data-value="50">50</button><button data-value="100">100</button></div><div class="input-row"><input id="goalInput" type="number" inputmode="numeric" min="1" max="9999" placeholder="自訂（1～9999）" aria-label="自訂目標"><button id="applyGoal" class="utility">套用</button></div></section>
-<section class="sec"><h3>聲音與回饋</h3><div class="setting-row"><label for="voiceCount">觸碰報數／讀出題目</label><button class="switch" id="voiceCount" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="voiceCheer">里程碑語音鼓勵</label><button class="switch" id="voiceCheer" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="vibrate">震動回饋</label><button class="switch" id="vibrate" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="tapSound">成功觸碰提示音</label><button class="switch" id="tapSound" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="visual">觸碰動畫</label><button class="switch" id="visual" role="switch" aria-checked="false"></button></div><p>iPad、iPhone 部分瀏覽器不支援震動，中文語音也可能需要先觸碰畫面啟用。</p></section>
+<section class="sec"><h3>聲音與回饋</h3><div class="setting-row"><label for="voiceCount">觸碰報數／讀出題目</label><button class="switch" id="voiceCount" role="switch" aria-checked="false"></button></div><div class="sec" style="padding:7px 0 13px;border-bottom:0"><h3>報數語速</h3><div class="chips" data-key="voiceRate"><button data-value="1">正常 1.0×</button><button data-value="1.2">稍快 1.2×</button><button data-value="1.4">快速 1.4×</button><button data-value="1.6">更快 1.6×</button></div><p>預設稍快 1.2×；實際速度依 iPad 中文語音引擎而異。</p></div><div class="setting-row"><label for="voiceCheer">里程碑語音鼓勵</label><button class="switch" id="voiceCheer" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="vibrate">震動回饋</label><button class="switch" id="vibrate" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="tapSound">成功觸碰提示音</label><button class="switch" id="tapSound" role="switch" aria-checked="false"></button></div><div class="utility-row" style="margin-top:8px"><button id="testAudio" type="button" class="utility">測試提示音</button><button id="testVoice" type="button" class="utility">測試語音報數</button></div><div class="setting-row"><label for="visual">觸碰動畫</label><button class="switch" id="visual" role="switch" aria-checked="false"></button></div><p>iPad Chrome 音效可能需要先觸碰畫面啟用；若測試仍無聲，請確認媒體音量、靜音設定，或改用 Safari 比較。</p></section>
 <section class="sec"><h3>畫面與操作</h3><div class="setting-row"><label for="wake">防止螢幕休眠</label><button class="switch" id="wake" role="switch" aria-checked="false"></button></div><div class="utility-row"><button id="fullscreen" class="utility">切換全螢幕</button><button id="reset" class="utility">重新開始</button></div><div id="status" class="status">測試版：設定按一下就能開啟；設定會保留，重新開啟網頁從 0 開始。</div></section>
-<section class="sec" style="border:0"><h3>延伸資源</h3><a class="link" href="https://relive.tw/" target="_blank" rel="noopener noreferrer"><span>中風復健懶人包</span><span>↗</span></a><a class="link" href="https://reliveot.github.io/card/" target="_blank" rel="noopener noreferrer"><span>楊昀霖職能治療師 · 電子名片</span><span>↗</span></a></section>
+<section class="sec" style="border:0"><h3>延伸資源</h3><a class="link" href="https://reliveot.github.io/stroke-rehab-guide/" target="_blank" rel="noopener noreferrer"><span>中風復健懶人包</span><span>↗</span></a><a class="link" href="https://reliveot.github.io/card/" target="_blank" rel="noopener noreferrer"><span>楊昀霖職能治療師 · 電子名片</span><span>↗</span></a></section>
 <button id="done" class="done">完成，回到練習</button>
 </div></div></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id), app=$('app'),gear=$('gear'),overlay=$('overlay');
-const defaults={mode:'free',pattern:'alternate',memoryLength:3,lifeCategory:'mix',noGoColor:'red',noGoSeconds:3,area:100,goal:100,cooldown:800,voiceCount:false,voiceCheer:true,vibrate:true,tapSound:true,visual:true,wake:true};
+const defaults={mode:'free',pattern:'alternate',memoryLength:3,lifeCategory:'mix',noGoColor:'red',noGoSeconds:3,area:100,goal:100,cooldown:800,voiceRate:1.2,voiceCount:false,voiceCheer:true,vibrate:true,tapSound:true,visual:true,wake:true};
 let cfg={...defaults};try{const saved=JSON.parse(localStorage.getItem('motion-counter-v3')||'{}');Object.keys(defaults).forEach(k=>{if(typeof saved[k]===typeof defaults[k])cfg[k]=saved[k]})}catch(_){}
-const allowed={mode:['free','direction','memory','life','inhibit'],pattern:['alternate','double','random'],memoryLength:[2,3,4,5],lifeCategory:['mix','colors','shapes','food','places','home'],noGoColor:['red','blue','green','yellow','purple'],noGoSeconds:[2,3,5],area:[100,75,50],cooldown:[400,800,1200,2000]};Object.keys(allowed).forEach(k=>{if(!allowed[k].includes(cfg[k]))cfg[k]=defaults[k]});if(!Number.isInteger(cfg.goal)||cfg.goal<1||cfg.goal>9999)cfg.goal=100;
+const allowed={mode:['free','direction','memory','life','inhibit'],pattern:['alternate','double','random'],memoryLength:[2,3,4,5],lifeCategory:['mix','colors','shapes','food','places','home'],noGoColor:['red','blue','green','yellow','purple'],noGoSeconds:[2,3,5],area:[100,75,50],cooldown:[400,800,1200,2000],voiceRate:[1,1.2,1.4,1.6]};Object.keys(allowed).forEach(k=>{if(!allowed[k].includes(cfg[k]))cfg[k]=defaults[k]});if(!Number.isInteger(cfg.goal)||cfg.goal<1||cfg.goal>9999)cfg.goal=100;
 const palette=[{id:'red',name:'紅色',hex:'#e35d62'},{id:'blue',name:'藍色',hex:'#528ee7'},{id:'green',name:'綠色',hex:'#46aa7a'},{id:'yellow',name:'黃色',hex:'#e8bc52'},{id:'purple',name:'紫色',hex:'#9872d5'}];
 const bank={colors:['講出一個紅色的東西','講出一個綠色的東西','講出一個黃色的東西','講出一個藍色的東西','找出一個紅色的東西','找出一個綠色的東西','找出一個黃色的東西','找出一個藍色的東西'],shapes:['講出一個圓形的東西','找出一個圓形的東西','講出一個方形的東西','找出一個長方形的東西','找出一個三角形的東西'],food:['講出一種水果','講出一種蔬菜','講出一種早餐食物','講出一道家常菜','講出一種飲料','講出一種甜點'],places:['講出一個台灣地名','講出一個台灣縣市','講出一個國家','講出一個國外城市','講出一個你去過的地方'],home:['講出一種家具','講出一種廚房用品','講出一種浴室用品','講出一種清潔用品','講出一種交通工具','講出一種家電','講出一種職業']};
 let count=0,dirIndex=0,dirSequence=[],memorySequence=[],memoryStage='show',memoryIndex=0,memoryTimer=null,question='',reaction=null,reactionTimer=null,lastAccepted=-Infinity,contacts=new Set(),wakeLock=null,toastTimer=null,lastSpeech='',audioContext=null;
@@ -188,21 +188,40 @@ function render(){hide();app.classList.toggle('reaction-mode',cfg.mode==='inhibi
 }
 function pop(){const n=$('mainNumber');n.classList.remove('pop');void n.offsetWidth;if(cfg.visual)n.classList.add('pop')}
 function speakText(){if(cfg.mode==='life')say(question);else if(cfg.mode==='inhibit')say(reaction.color.name);else if(cfg.voiceCount)say(String(count))}
-function say(s){if(!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const utter=new SpeechSynthesisUtterance(String(s));utter.lang='zh-TW';utter.rate=.95;utter.pitch=1.04;const voices=speechSynthesis.getVoices(),zh=voices.find(v=>v.lang.toLowerCase()==='zh-tw')||voices.find(v=>v.lang.toLowerCase().startsWith('zh'));if(zh)utter.voice=zh;speechSynthesis.speak(utter)}catch(_){}}
+function say(s){if(!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const utter=new SpeechSynthesisUtterance(String(s));utter.lang='zh-TW';utter.rate=cfg.voiceRate;utter.pitch=1.04;const voices=speechSynthesis.getVoices(),zh=voices.find(v=>v.lang.toLowerCase()==='zh-tw')||voices.find(v=>v.lang.toLowerCase().startsWith('zh'));if(zh)utter.voice=zh;speechSynthesis.speak(utter)}catch(_){}}
 function vib(ms=15){if(cfg.vibrate&&navigator.vibrate)try{navigator.vibrate(ms)}catch(_){}}
-function playAcceptedTone(){
-  if(!cfg.tapSound)return;
+// iPadOS 的 Web Audio 需要由真正的使用者觸碰事件解除鎖定。
+function unlockAudio(force=false){
+  if(!cfg.tapSound&&!force)return;
   try{
     const AC=window.AudioContext||window.webkitAudioContext;
     if(!AC)return;
-    audioContext ||= new AC();
-    if(audioContext.state==='suspended')audioContext.resume().catch(()=>{});
-    const now=audioContext.currentTime,osc=audioContext.createOscillator(),gain=audioContext.createGain();
-    osc.type='sine';osc.frequency.setValueAtTime(720,now);osc.frequency.exponentialRampToValueAtTime(950,now+.07);
-    gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.055,now+.008);gain.gain.exponentialRampToValueAtTime(.0001,now+.115);
-    osc.connect(gain);gain.connect(audioContext.destination);osc.start(now);osc.stop(now+.13);
+    if(!audioContext||audioContext.state==='closed')audioContext=new AC();
+    if(audioContext.state!=='running')audioContext.resume().catch(()=>{});
   }catch(_){}
 }
+function playAcceptedTone(force=false){
+  if(!cfg.tapSound&&!force)return;
+  try{
+    unlockAudio(force);
+    const ctx=audioContext;
+    if(!ctx)return;
+    const play=()=>{
+      if(ctx.state!=='running')return;
+      const now=ctx.currentTime,osc=ctx.createOscillator(),gain=ctx.createGain();
+      osc.type='sine';osc.frequency.setValueAtTime(680,now);osc.frequency.exponentialRampToValueAtTime(920,now+.075);
+      gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.11,now+.012);gain.gain.exponentialRampToValueAtTime(.0001,now+.17);
+      osc.connect(gain);gain.connect(ctx.destination);osc.start(now);osc.stop(now+.18);
+      osc.onended=()=>{try{osc.disconnect();gain.disconnect()}catch(_){}};
+    };
+    if(ctx.state==='running')play();
+    else ctx.resume().then(play).catch(()=>{});
+  }catch(_){}
+}
+// 觸碰或點擊立即解鎖，避免 iPad 在非使用者事件中啟動聲音。
+document.addEventListener('pointerdown',unlockAudio,{capture:true,passive:true});
+document.addEventListener('touchstart',unlockAudio,{capture:true,passive:true});
+
 function effect(p){
  if(!cfg.visual)return;
  const x=document.createElement('div');x.className='ripple';x.style.left=p.x+'px';x.style.top=p.y+'px';app.appendChild(x);x.addEventListener('animationend',()=>x.remove(),{once:true});
@@ -270,6 +289,8 @@ function sync(){document.querySelectorAll('[data-key]').forEach(group=>{const ke
 document.querySelectorAll('[data-key]').forEach(group=>group.addEventListener('click',e=>{const btn=e.target.closest('button[data-value]');if(!btn)return;const key=group.dataset.key,raw=btn.dataset.value;const next=['memoryLength','noGoSeconds','area','goal','cooldown'].includes(key)?Number(raw):raw;if(cfg[key]===next)return;cfg[key]=next;if(key==='mode'||['pattern','memoryLength','lifeCategory','noGoColor','noGoSeconds','goal'].includes(key))resetMode();else render();sync();save()}));
 $('applyGoal').onclick=()=>{const input=$('goalInput'),n=Number(input.value);if(!Number.isInteger(n)||n<1||n>9999){input.setCustomValidity('請輸入 1 到 9999 的整數');input.reportValidity();return}input.setCustomValidity('');cfg.goal=n;resetMode();sync();save();input.blur()};$('goalInput').addEventListener('input',()=>$('goalInput').setCustomValidity(''));
 for(const key of ['voiceCount','voiceCheer','vibrate','tapSound','visual','wake'])$(key).onclick=()=>{cfg[key]=!cfg[key];save();sync();if(key==='wake')requestWake()};
+$('testAudio').onclick=()=>{unlockAudio(true);playAcceptedTone(true);$('status').textContent='已嘗試播放提示音；若 iPad 仍無聲，請確認音量或以 Safari 比較。'};
+$('testVoice').onclick=()=>{say('一、二、三');$('status').textContent='已嘗試播放語音報數（依目前設定語速）。'};
 $('reset').onclick=()=>{resetMode();$('status').textContent='已重新開始，設定保持不變。'};
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement){await document.exitFullscreen()}else if(document.documentElement.requestFullscreen){await document.documentElement.requestFullscreen()}else{$('status').textContent='此瀏覽器不支援網頁全螢幕，可嘗試加入主畫面。';return}$('status').textContent='全螢幕狀態已切換。'}catch(_){$('status').textContent='瀏覽器未允許全螢幕；iPad 可嘗試加入主畫面。'}};
 async function requestWake(){if(!cfg.wake||document.visibilityState!=='visible'){if(wakeLock)try{await wakeLock.release()}catch(_){}wakeLock=null;return}if(wakeLock)return;if(!('wakeLock'in navigator)){$('status').textContent='瀏覽器未支援防休眠，其他功能仍可正常使用。';return}try{wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>wakeLock=null,{once:true});$('status').textContent='防休眠已啟用（瀏覽器允許時有效）。'}catch(_){$('status').textContent='防休眠未啟用；可能需要 HTTPS 或瀏覽器支援。'}}
