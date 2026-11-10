@@ -99,6 +99,18 @@
 #app.reaction-mode.bright-reaction .guide{border-color:#173d38cc}
 @media(max-height:600px){.memory-steps{top:calc(3px + env(safe-area-inset-top));height:18px;width:min(90%,620px)}.memory-step{height:4px}}
 @media(prefers-reduced-motion:reduce){.memory-step.newest{animation-duration:.01ms}}
+
+/* V13: iPad / mobile settings panel: header and footer pinned, middle area scrolls independently */
+.overlay{box-sizing:border-box;padding:clamp(8px,2.2vmin,18px);height:100dvh;overflow:hidden;touch-action:auto}
+.sheet{box-sizing:border-box;display:flex;flex-direction:column;width:min(100%,560px);height:min(94dvh,920px);max-height:calc(100dvh - 16px);min-height:0;overflow:hidden;isolation:isolate}
+.sheet-head{flex:0 0 auto;padding:18px 20px 13px;border-bottom:1px solid #dce6de;background:var(--panel);z-index:2}
+.sheet-head h2{font-size:22px}
+.scroll{box-sizing:border-box;flex:1 1 0;min-height:0;min-width:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:0 20px 14px;scrollbar-width:thin}
+.scroll>.sec{box-sizing:border-box;min-width:0}
+.sheet-foot{box-sizing:border-box;flex:0 0 auto;background:var(--panel);border-top:1px solid #dce6de;padding:11px 20px calc(11px + env(safe-area-inset-bottom));z-index:2}
+.sheet-foot .done{box-sizing:border-box;display:block;margin:0;padding:14px;width:100%;font-size:15px;min-height:46px}
+.sheet button,.scroll input{touch-action:manipulation}
+@media(max-height:650px){.sheet{height:calc(100dvh - 12px);max-height:calc(100dvh - 12px)}.sheet-head{padding:12px 17px 9px}.sheet-foot{padding:7px 17px calc(7px + env(safe-area-inset-bottom))}.scroll{padding:0 17px 10px}}
 </style>
 </head>
 <body>
@@ -120,11 +132,10 @@
 <section class="sec"><h3>有效觸控範圍</h3><div class="chips" data-key="area"><button data-value="100">100%</button><button data-value="75">75%</button><button data-value="50">50%</button></div><p>全螢幕為預設。方向與記憶模式會依比例縮小左右觸控區。</p></section>
 <section class="sec"><h3>觸碰防誤觸間隔</h3><div class="chips" data-key="cooldown"><button data-value="400">0.4 秒</button><button data-value="800">0.8 秒</button><button data-value="1200">1.2 秒</button><button data-value="2000">2 秒</button></div><p>同一批手指、指節或手掌接觸只算一下；必須全部離開螢幕，並超過間隔時間後才接受下一下。</p></section>
 <section class="sec"><h3>目標次數／題數</h3><div class="chips" data-key="goal"><button data-value="10">10</button><button data-value="20">20</button><button data-value="30">30</button><button data-value="50">50</button><button data-value="100">100</button></div><div class="input-row"><input id="goalInput" type="number" inputmode="numeric" min="1" max="9999" placeholder="自訂（1～9999）" aria-label="自訂目標"><button id="applyGoal" class="utility">套用</button></div></section>
-<section class="sec"><h3>聲音與回饋</h3><div class="setting-row"><label for="voiceCount">觸碰報數／讀出題目</label><button class="switch" id="voiceCount" role="switch" aria-checked="false"></button></div><p>預設稍快 1.2×；實際速度依 iPad 中文語音引擎而異。</p></div><div class="setting-row"><label for="voiceCheer">里程碑語音鼓勵</label><button class="switch" id="voiceCheer" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="vibrate">震動回饋</label><button class="switch" id="vibrate" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="tapSound">成功觸碰提示音</label><button class="switch" id="tapSound" role="switch" aria-checked="false"></button></div><div class="utility-row" style="margin-top:8px"><button id="testAudio" type="button" class="utility">測試提示音</button><button id="testVoice" type="button" class="utility">測試語音報數</button></div><div class="setting-row"><label for="visual">觸碰動畫</label><button class="switch" id="visual" role="switch" aria-checked="false"></button></div><p>iPad Chrome 音效可能需要先觸碰畫面啟用；若測試仍無聲，請確認媒體音量、靜音設定，或改用 Safari 比較。</p></section>
-<section class="sec"><h3>畫面與操作</h3><div class="setting-row"><label for="wake">防止螢幕休眠</label><button class="switch" id="wake" role="switch" aria-checked="false"></button></div><div class="utility-row"><button id="fullscreen" class="utility">切換全螢幕</button><button id="reset" class="utility">重新開始</button></div><div id="status" class="status">測試版：設定按一下就能開啟；設定會保留，重新開啟網頁從 0 開始。</div></section>
-<section class="sec" style="border:0"><h3>延伸資源</h3><a class="link" href="https://reliveot.github.io/stroke-rehab-guide/" target="_blank" rel="noopener noreferrer"><span>中風復健懶人包</span><span>↗</span></a><a class="link" href="https://reliveot.github.io/card/" target="_blank" rel="noopener noreferrer"><span>楊昀霖職能治療師 · 電子名片</span><span>↗</span></a></section>
-<button id="done" class="done">完成，回到練習</button>
-</div></div></div>
+<section class="sec"><h3>聲音與回饋</h3><div class="setting-row"><label for="voiceCount">觸碰報數／讀出題目</label><button class="switch" id="voiceCount" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="voiceCheer">里程碑語音鼓勵</label><button class="switch" id="voiceCheer" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="vibrate">震動回饋</label><button class="switch" id="vibrate" role="switch" aria-checked="false"></button></div><div class="setting-row"><label for="tapSound">成功觸碰提示音</label><button class="switch" id="tapSound" role="switch" aria-checked="false"></button></div><div class="utility-row" style="margin-top:8px"><button id="testAudio" type="button" class="utility">測試提示音</button><button id="testVoice" type="button" class="utility">測試語音報數</button></div><div class="setting-row"><label for="visual">觸碰動畫</label><button class="switch" id="visual" role="switch" aria-checked="false"></button></div></section>
+<section class="sec"><h3>畫面與操作</h3><div class="setting-row"><label for="wake">防止螢幕休眠</label><button class="switch" id="wake" role="switch" aria-checked="false"></button></div><div class="utility-row"><button id="fullscreen" class="utility">切換全螢幕</button><button id="reset" class="utility">重新開始</button></div><div id="status" class="status">設定長按齒輪 2 秒開啟；設定會保留，重新開啟網頁從 0 開始。</div></section>
+<section class="sec" style="border:0"><h3>延伸資源</h3><a class="link" href="https://reliveot.github.io/stroke-rehab-guide/" target="_blank" rel="noopener noreferrer"><span>中風復健懶人包</span><span>↗</span></a><a class="link" href="https://reliveot.github.io/card/" target="_blank" rel="noopener noreferrer"><span>聯絡楊昀霖職能治療師</span><span>↗</span></a></section>
+</div><div class="sheet-foot"><button id="done" class="done">完成設定</button></div></div></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id), app=$('app'),gear=$('gear'),overlay=$('overlay');
@@ -248,7 +259,14 @@ function cooldownEffect(p, remaining, fraction){
  setTimeout(()=>bar.remove(),Math.max(0,remaining)+70);
 }
 function toast(s){$('toast').textContent=s;$('toast').classList.remove('show');void $('toast').offsetWidth;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),1900)}
-function milestone(previous){let msg='';for(const m of [25,50,75,100])if(previous/cfg.goal*100<m&&count/cfg.goal*100>=m){msg=({25:'完成四分之一了！',50:'完成一半了！',75:'完成四分之三了！',100:'完成目標！做得很好'})[m];break}if(msg){toast(msg);if(cfg.voiceCheer)say(msg);return true}return false}
+const milestonePhrases={
+  25:['很好，已經完成四分之一了！','不錯喔，繼續保持！','順利完成第一階段！','很好，照自己的步調繼續！'],
+  50:['做到一半了，加油！','已經完成一半，做得很好！','很好，繼續照自己的速度來！','一半了，穩穩地繼續！'],
+  75:['快完成了，再一小段！','已經完成四分之三了！','做得很好，越來越接近目標！','最後一段了，繼續保持！'],
+  100:['完成目標，辛苦了！','恭喜完成這一組！','今天這一組完成了，做得很好！','順利達標了，可以休息一下！']
+};
+let lastMilestonePhrase='';
+function milestone(previous){let msg='';for(const m of [25,50,75,100])if(previous/cfg.goal*100<m&&count/cfg.goal*100>=m){const options=milestonePhrases[m].filter(x=>x!==lastMilestonePhrase);msg=choose(options.length?options:milestonePhrases[m]);lastMilestonePhrase=msg;break}if(msg){toast(msg);if(cfg.voiceCheer)say(msg);return true}return false}
 function accepted(p){if(count>=cfg.goal)return;const previous=count;count++;vib(count===cfg.goal?32:12);effect(p);playAcceptedTone();if(cfg.mode==='direction'){dirIndex++;nextDir()}if(cfg.mode==='life')nextQuestion();if(cfg.mode==='memory'){memoryIndex++;if(memoryIndex>=memorySequence.length&&count<cfg.goal)makeMemory();else if(count>=cfg.goal)clearTimeout(memoryTimer)}if(cfg.mode==='inhibit'&&count<cfg.goal)newReaction();else if(cfg.mode==='inhibit')clearTimeout(reactionTimer);render();pop();const wasMilestone=milestone(previous);if(cfg.voiceCount&&!wasMilestone)speakText()}
 function handleTap(e){if(overlay.classList.contains('open')||count>=cfg.goal)return false;const r=app.getBoundingClientRect(),p={x:e.clientX-r.left,y:e.clientY-r.top};if(cfg.mode==='free'){if(!inside(p,areaRect()))return false;accepted(p)}else if(cfg.mode==='direction'){const d=currentDirection(),rect=zoneRects()[d==='left'?0:1];if(!inside(p,rect))return false;accepted(p)}else if(cfg.mode==='memory'){if(memoryStage!=='answer')return false;const side=memorySequence[memoryIndex],rect=zoneRects()[side==='left'?0:1];if(!inside(p,rect))return false;accepted(p)}else if(cfg.mode==='life'){if(!inside(p,areaRect()))return false;accepted(p)}else if(cfg.mode==='inhibit'){if(!inside(p,areaRect()))return false;if(reaction.noGo){reaction.wrong=true;vib(25);render();return false}accepted(p)}return true}
 // 一次連續接觸（包含多指、指節、手掌）只接受一個有效計數。
